@@ -142,11 +142,28 @@ Kubernetes系统中有两个服务用到 Etcd：
 #### 3. Node 组件
 
 
+##### 1. Kubelet
+
+> 问题：Kubelet 是如何接受调度请求并启动容器的？
+
+
+##### 2. Kube-proxy
+
+> 问题：Kube-proxy 有什么作用，提供什么服务？
+
+##### 3. Container Runtime
+
+> 问题：了解都有哪些 Container Runtime，了解 Docker 一些基本操作与实现原理
+
+
 
 
 #### 4. 核心 Addons & Plugins
 
+##### 1. DNS
 
+
+##### 2. Network Plugin
 
 
 ### （2）`Kubernetes` 容器调度的基本流程
