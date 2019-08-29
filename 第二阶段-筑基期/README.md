@@ -116,15 +116,18 @@ Kubernetes系统中有两个服务用到 Etcd：
 具体的调度过程，一般如下：
 1. 首先，客户端通过API Server的REST API/kubectl/helm创建
    pod/service/deployment/job等，支持类型主要为JSON/YAML/helm tgz。
+   
 2. 接下来，API Server收到用户请求，存储到相关数据到etcd。
+
 3. 调度器通过API Server查看未调度（bind）的Pod列表，循环遍历地为每个Pod分配节点，
-   尝试为Pod分配节点。调度过程分为2个阶段：
-- 第一阶段：预选过程，过滤节点，调度器用一组规则过滤掉不符合要求的主机。比如Pod
-  指定了所需要的资源量，那么可用资源比Pod需要的资源量少的主机会被过滤掉。
-- 第二阶段：优选过程，节点优先级打分，对第一步筛选出的符合要求的主机进行打分，在
-  主机打分阶段，调度器会考虑一些整体优化策略，比如把容一个Replication Controller
-  的副本分布到不同的主机上，使用最低负载的主机等。
+尝试为Pod分配节点。调度过程分为2个阶段：
+
+- 第一阶段：预选过程，过滤节点，调度器用一组规则过滤掉不符合要求的主机。比如Pod 指定了所需要的资源量，那么可用资源比Pod需要的资源量少的主机会被过滤掉。
+
+- 第二阶段：优选过程，节点优先级打分，对第一步筛选出的符合要求的主机进行打分，在主机打分阶段，调度器会考虑一些整体优化策略，比如把容一个 Replication Controller 的副本分布到不同的主机上，使用最低负载的主机等。
+  
 4. 选择主机：选择打分最高的节点，进行binding操作，结果存储到etcd中。
+
 5. 所选节点对于的kubelet根据调度结果执行Pod创建操作。
 
 
@@ -146,16 +149,23 @@ Kubernetes系统中有两个服务用到 Etcd：
 
 > 问题：Kubelet 是如何接受调度请求并启动容器的？
 
+Kubelet 是 Master 在 Node 节点上 Agent，管理本机运行容器的生命周期，比如 创建容器、
+
+http://bk.poph163.com/2018/04/14/kubernetes%E5%AE%B9%E5%99%A8%E9%9B%86%E7%BE%A4%E7%AE%A1%E7%90%86/
 
 ##### 2. Kube-proxy
 
 > 问题：Kube-proxy 有什么作用，提供什么服务？
 
+在 Node 节点上实现 Pod 网络代理，维护网络规则和四层负载均衡工作
+
 ##### 3. Container Runtime
 
 > 问题：了解都有哪些 Container Runtime，了解 Docker 一些基本操作与实现原理
 
+Kubelet 可通过配置项 container-runtime，container-runtime-endpoint 和 image-service-endpoint 来选择使用 docker，rkt（不建议使用）或任何 CRI API 兼容的 container-runtime 。
 
+https://www.yangcs.net/posts/container-runtime/
 
 
 #### 4. 核心 Addons & Plugins
